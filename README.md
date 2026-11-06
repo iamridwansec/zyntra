@@ -1,15 +1,42 @@
-# Zyntra
+<div align="center">
 
-### Security Assessment & Intelligence Framework
+# `ZYNTRA`
 
-**Version:** 0.1.0
+### SECURITY ASSESSMENT & INTELLIGENCE FRAMEWORK
+
+**Investigate. Assess. Correlate. Report.**
+
+[![Version](https://img.shields.io/badge/version-0.1.0-00c2a8?style=for-the-badge)](https://github.com/iamridwansec/zyntra/releases/tag/v0.1.0)
+[![Python](https://img.shields.io/badge/python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Release](https://img.shields.io/badge/release-public-00c2a8?style=for-the-badge)](https://github.com/iamridwansec/zyntra/releases)
+
+</div>
+
+```text
+┌──────────────────────────────────────────────────────────┐
+│  ZYNTRA :: SECURITY INTELLIGENCE FRAMEWORK                │
+├──────────────────────────────────────────────────────────┤
+│                                                          │
+│  [01] RECONNAISSANCE       Domain & infrastructure intel │
+│  [02] ENUMERATION          Web, API & surface discovery   │
+│  [03] WEB ASSESSMENT       Security configuration tests  │
+│  [04] EVIDENCE             Correlation & structured data  │
+│  [05] REPORTING            JSON & HTML assessment reports │
+│                                                          │
+├──────────────────────────────────────────────────────────┤
+│  INTERFACE : COMMAND LINE                                 │
+│  LANGUAGE  : PYTHON                                       │
+│  VERSION   : 0.1.0                                        │
+└──────────────────────────────────────────────────────────┘
+
+
+```
 
 Zyntra is a modular Python framework designed to support authorized security assessments through reconnaissance, enumeration, web security testing, evidence correlation, and structured reporting.
 
 It brings multiple assessment capabilities into one command-line interface, helping security practitioners collect technical observations, identify potential security weaknesses, preserve evidence, and generate assessment reports.
 
-> Zyntra is intended for authorized security testing only. Always obtain permission and define the assessment scope before testing a target.
-
+> **Authorized use only:** Obtain permission and define the assessment scope before testing any target.
 ---
 
 ## Features
