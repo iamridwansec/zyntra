@@ -1,42 +1,29 @@
 <div align="center">
 
-# `ZYNTRA`
+# ZYNTRA
 
-### SECURITY ASSESSMENT & INTELLIGENCE FRAMEWORK
+### Security Assessment & Intelligence Framework
 
-**Investigate. Assess. Correlate. Report.**
+**Discover. Assess. Correlate. Report.**
 
-[![Version](https://img.shields.io/badge/version-0.1.0-00c2a8?style=for-the-badge)](https://github.com/iamridwansec/zyntra/releases/tag/v0.1.0)
-[![Python](https://img.shields.io/badge/python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-[![Release](https://img.shields.io/badge/release-public-00c2a8?style=for-the-badge)](https://github.com/iamridwansec/zyntra/releases)
+![Version](https://img.shields.io/badge/version-0.1.0-0891B2?style=flat-square)
+![Python](https://img.shields.io/badge/python-3.10%2B-3776AB?style=flat-square&logo=python)
+![Release](https://img.shields.io/badge/status-public_release-16A34A?style=flat-square)
+
+[Features](#features) · [Requirements](#requirements) · [Installation](#local-setup) · [Usage](#command-line-usage)
 
 </div>
 
-```text
-┌──────────────────────────────────────────────────────────┐
-│  ZYNTRA :: SECURITY INTELLIGENCE FRAMEWORK                │
-├──────────────────────────────────────────────────────────┤
-│                                                          │
-│  [01] RECONNAISSANCE       Domain & infrastructure intel │
-│  [02] ENUMERATION          Web, API & surface discovery   │
-│  [03] WEB ASSESSMENT       Security configuration tests  │
-│  [04] EVIDENCE             Correlation & structured data  │
-│  [05] REPORTING            JSON & HTML assessment reports │
-│                                                          │
-├──────────────────────────────────────────────────────────┤
-│  INTERFACE : COMMAND LINE                                 │
-│  LANGUAGE  : PYTHON                                       │
-│  VERSION   : 0.1.0                                        │
-└──────────────────────────────────────────────────────────┘
+---
 
+## Overview
 
-```
+Zyntra is a modular Python framework for authorized security assessments. It brings reconnaissance, enumeration, web security testing, evidence correlation, and structured reporting together through a unified command-line interface.
 
-Zyntra is a modular Python framework designed to support authorized security assessments through reconnaissance, enumeration, web security testing, evidence correlation, and structured reporting.
+Built to help security practitioners investigate attack surfaces, document technical observations, identify potential weaknesses, and produce structured assessment reports.
 
-It brings multiple assessment capabilities into one command-line interface, helping security practitioners collect technical observations, identify potential security weaknesses, preserve evidence, and generate assessment reports.
+> **Responsible use:** Zyntra is intended for authorized security testing only. Always obtain permission and establish a clearly defined assessment scope.
 
-> **Authorized use only:** Obtain permission and define the assessment scope before testing any target.
 ---
 
 ## Features
