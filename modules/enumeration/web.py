@@ -54,8 +54,11 @@ def discover_web_surface(base_url):
     try:
         with urllib.request.urlopen(request, timeout=5) as response:
             content_type = response.headers.get("Content-Type", "")
-            html = response.read().decode("utf-8", errors="ignore")
 
+            if "html" in content_type.lower():
+                html = response.read().decode("utf-8", errors="ignore")
+            else:
+                html = ""
             return {
                 "url": response.url,
                 "status": response.status,
@@ -77,8 +80,14 @@ def discover_web_surface(base_url):
             "status": None,
             "content_type": "",
             "html": "",
-            "error": str(error.reason)
+            "error": str(error.reason),
+            "result_type": (
+                "timeout"
+                if isinstance(error.reason, TimeoutError)
+                else "error"
+            )
         }
+
     except TimeoutError as error:
         return {
             "url": base_url,
@@ -90,7 +99,6 @@ def discover_web_surface(base_url):
 
 def extract_javascript(html):
     pattern = r'<script[^>]+src=["\']([^"\']+)["\']'
-
     return re.findall(pattern, html, re.IGNORECASE)
 
 def discover_page_javascript(pages):
@@ -105,7 +113,6 @@ def discover_page_javascript(pages):
 
 def extract_links(html):
     pattern = r'<a[^>]+href=["\']([^"\']+)["\']'
-
     return re.findall(pattern, html, re.IGNORECASE)
 
 def remove_url_fragment(url):

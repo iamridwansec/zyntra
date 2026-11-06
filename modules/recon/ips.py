@@ -2,12 +2,18 @@ import socket
 
 
 def resolve_ips(hostname):
-    results = socket.getaddrinfo(
-        hostname,
-        None,
-        socket.AF_UNSPEC,
-        socket.SOCK_STREAM
-    )
+    try:
+        results = socket.getaddrinfo(
+            hostname,
+            None,
+            socket.AF_UNSPEC,
+            socket.SOCK_STREAM
+        )
+    except socket.gaierror:
+        return {
+            "ipv4": [],
+            "ipv6": []
+        }
 
     ipv4 = set()
     ipv6 = set()

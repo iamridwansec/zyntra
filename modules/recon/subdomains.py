@@ -1,5 +1,5 @@
 import socket
-from pathlib import Path
+from config.paths import SUBDOMAIN_WORDLIST
 import dns.resolver
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -58,12 +58,7 @@ def check_subdomain(hostname):
 def discover_subdomains(target, max_workers=10):
     domain = target.hostname
 
-    wordlist_path = (
-        Path(__file__).resolve().parents[2]
-        / "config"
-        / "wordlists"
-        / "subdomains.txt"
-    )
+    wordlist_path = SUBDOMAIN_WORDLIST
 
     candidates = [
         candidate

@@ -1,5 +1,8 @@
 import json
+from dataclasses import asdict
 from pathlib import Path
+
+from core.findings import build_findings
 
 
 def assessment_to_dict(assessment):
@@ -11,6 +14,11 @@ def assessment_to_dict(assessment):
             "hostname": assessment.target.hostname
         },
         "started_at": assessment.started_at.isoformat(),
+        "finished_at": (
+            assessment.finished_at.isoformat()
+            if assessment.finished_at
+            else None
+        ),
         "status": assessment.status,
         "observations": [
             {
@@ -20,13 +28,17 @@ def assessment_to_dict(assessment):
                 "timestamp": observation.timestamp.isoformat()
             }
             for observation in assessment.observations
+        ],
+        "findings": [
+            asdict(finding)
+            for finding in build_findings(assessment)
         ]
     }
 
 
 def save_assessment(assessment, path):
     data = assessment_to_dict(assessment)
-    
+
     Path(path).parent.mkdir(parents=True, exist_ok=True)
 
     with open(path, "w") as file:

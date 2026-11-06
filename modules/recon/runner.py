@@ -1,6 +1,5 @@
 from datetime import datetime
 
-from core.assessment import Assessment
 from core.observation import Observation
 from .target import Target
 from .dns import collect_dns, resolve_reverse
@@ -16,19 +15,12 @@ from .technologies import identify_technologies
 from .network import discover_ports
 from .web import discover_web_surface
 from .infrastructure import map_infrastructure
-from core.ids import generate_assessment_id
-from core.serializer import save_assessment
 
 
 
-def run(target):
-    target = Target(target)
-
-    assessment = Assessment(
-        assessment_id=generate_assessment_id(),
-        target=target,
-        started_at=datetime.now()
-    )
+def run(target, assessment, ports=None):
+    if not isinstance(target, Target):
+        target = Target(target)
 
     if target.target_type in ("domain", "url"):
         dns_data = collect_dns(target.hostname)
@@ -118,8 +110,8 @@ def run(target):
         )
 
         assessment.add_observation(observation)
-        
-        network_data = discover_ports(target.hostname)
+
+        network_data = discover_ports(target.hostname, ports)
 
         observation = Observation(
             category="network",
@@ -193,7 +185,7 @@ def run(target):
         assessment.add_observation(observation)
 
 
-        network_data = discover_ports(target.value)
+        network_data = discover_ports(target.value, ports)
 
         observation = Observation(
             category="network",
@@ -220,11 +212,10 @@ def run(target):
 
             assessment.add_observation(observation)
 
-            
+
     print(f"[+] Recon target: {assessment.target.value}")
     print(f"[+] Target type: {assessment.target.target_type}")
     print(f"[+] Assessment ID: {assessment.assessment_id}")
-    print(f"[+] Assessment status: {assessment.status}")
     print(f"[+] Observations: {len(assessment.observations)}")
 
     if assessment.observations:
@@ -287,8 +278,20 @@ def run(target):
                 print(f"[+] IPv6: {observation.data['ipv6']}")
 
             elif observation.category == "network":
-                print(f"[+] Services: {observation.data}")
-            
+                data = observation.data
+
+                if data["status"] == "skipped":
+                    print(f"[*] Port discovery skipped: {data['reason']}")
+
+                else:
+                    print(f"[+] Ports checked: {len(data['requested_ports'])}")
+
+                    for result in data["results"]:
+                        print(
+                            f"    {result['port']}/tcp "
+                            f"{result['status']} "
+                            f"({result['service']})"
+                        )
             elif observation.category == "web_surface":
                 data = observation.data
                 print(f"[+] URL: {data['url']}")
@@ -298,13 +301,6 @@ def run(target):
                 print(f"[+] Location: {data['location']}")
                 print(f"[+] Allow: {data['allow']}")
                 print(f"[+] Error: {data.get('error', '')}")
-                
 
-    save_path = (
-        f"data/assessments/"
-        f"{assessment.assessment_id}/results.json"
-    )
-
-    save_assessment(assessment, save_path)
-
-    print(f"[+] Results saved to: {save_path}")
+    print(f"[+] Recon observations collected: {len(assessment.observations)}")
+    return "completed"

@@ -16,7 +16,7 @@ def resolve_ipv6(hostname):
             socket.AF_INET6
         )
 
-        return list({result[4][0] for result in results})
+        return sorted({result[4][0] for result in results})
 
     except socket.gaierror:
         return []
@@ -79,11 +79,12 @@ def resolve_ns(hostname):
         return []
 
 def collect_dns(hostname):
+    ipv4 = resolve_ipv4(hostname)
+
     return {
-        "A": [resolve_ipv4(hostname)],
+        "A": [ipv4] if ipv4 else [],
         "AAAA": resolve_ipv6(hostname),
         "MX": resolve_mx(hostname),
         "NS": resolve_ns(hostname)
     }
-
 

@@ -1,17 +1,15 @@
-from pathlib import Path
-
-COUNTER_FILE = Path("data/assessment_counter.txt")
+from config.paths import ASSESSMENT_COUNTER_FILE
 
 
 def generate_assessment_id():
-    if COUNTER_FILE.exists():
-        counter = int(COUNTER_FILE.read_text().strip())
+    if ASSESSMENT_COUNTER_FILE.exists():
+        counter = int(ASSESSMENT_COUNTER_FILE.read_text().strip())
     else:
         counter = 0
 
     counter += 1
 
-    COUNTER_FILE.parent.mkdir(parents=True, exist_ok=True)
-    COUNTER_FILE.write_text(str(counter))
+    ASSESSMENT_COUNTER_FILE.parent.mkdir(parents=True, exist_ok=True)
+    ASSESSMENT_COUNTER_FILE.write_text(str(counter))
 
     return f"ZYN-{counter:08d}"

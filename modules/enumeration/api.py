@@ -69,12 +69,16 @@ def discover_api(base_url):
             })
 
         except URLError as error:
+            if isinstance(error.reason, TimeoutError):
+                result_type = "timeout"
+            else:
+                result_type = "error"
+
             results.append({
                 "url": url,
                 "status": None,
                 "content_type": "",
-                "result_type": "error",
+                "result_type": result_type,
                 "error": str(error.reason)
             })
-
     return results

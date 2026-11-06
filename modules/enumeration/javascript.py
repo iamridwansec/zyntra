@@ -25,6 +25,7 @@ def discover_javascript(base_url):
 
     return javascript_urls
 
+
 def fetch_javascript(url):
     request = urllib.request.Request(
         url,
@@ -35,6 +36,7 @@ def fetch_javascript(url):
         content = response.read().decode("utf-8", errors="ignore")
 
     return content
+
 
 def extract_endpoints(javascript):
     pattern = r'["\'](/[^"\']+)["\']'

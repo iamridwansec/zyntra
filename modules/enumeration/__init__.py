@@ -1,7 +1,6 @@
 from datetime import datetime
 
 from modules.recon.target import Target
-from core.assessment import Assessment
 from core.observation import Observation
 from .api import discover_api
 from .javascript import (
@@ -13,21 +12,13 @@ from .web import (
     crawl_web_surface,
     discover_page_javascript
 )
-from core.ids import generate_assessment_id
-from core.serializer import save_assessment
 from .vhosts import discover_vhosts
+from modules.evidence.correlator import correlate_observations
 
 
-
-def run(target):
-    target = Target(target)
- 
-    assessment = Assessment(
-        assessment_id=generate_assessment_id(),
-        target=target,
-        started_at=datetime.now()
-
-    )
+def run(target, assessment):
+    if not isinstance(target, Target):
+        target = Target(target)
 
     print(f"[+] Assessment ID: {assessment.assessment_id}")
     print(f"[+] Enumeration target: {target.value}")
@@ -165,6 +156,8 @@ def run(target):
     javascript_urls = discover_page_javascript(pages)
     print(f"[+] JavaScript files discovered: {len(javascript_urls)}")
 
+    fetch_failed = False
+
     for javascript_url in javascript_urls:
         print(f"[+] JavaScript: {javascript_url}")
 
@@ -172,6 +165,7 @@ def run(target):
             javascript = fetch_javascript(javascript_url)
         except (OSError, TimeoutError) as error:
             print(f"[!] Could not fetch JavaScript: {error}")
+            fetch_failed = True
             continue
 
         endpoints = extract_endpoints(javascript)
@@ -207,16 +201,21 @@ def run(target):
         print(f"[+] Endpoints extracted: {len(endpoints)}")
         print(f"[+] Potential secrets: {len(findings)}")
 
+    correlations = correlate_observations(assessment.observations)
+
+    for correlation in correlations:
+        observation = Observation(
+            category="correlated_evidence",
+            source="evidence_correlation",
+            data=correlation,
+            timestamp=datetime.now()
+        )
+
+        assessment.add_observation(observation)
+
+    print(f"[+] Evidence correlations: {len(correlations)}")
+
+
 
     print(f"[+] Assessment observations: {len(assessment.observations)}")
-
-    assessment.status = "completed"
-
-    save_path = (
-        f"data/assessments/"
-        f"{assessment.assessment_id}/results.json"
-    )
-
-    save_assessment(assessment, save_path)
-
-    print(f"[+] Results saved to: {save_path}")
+    return "partial" if fetch_failed else "completed"

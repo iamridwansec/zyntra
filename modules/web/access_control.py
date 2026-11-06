@@ -33,6 +33,8 @@ def check_resource_access(url):
     except HTTPError as error:
         status_code = error.code
         final_url = error.url
+        error.close()
+
 
     except URLError as error:
         return {

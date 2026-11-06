@@ -24,6 +24,13 @@ def collect_whois(target):
             "data": ""
         }
 
+    except OSError:
+        return {
+            "target": target,
+            "status": None,
+            "data": ""
+        }
+
 def collect_rdap(domain):
     url = f"https://rdap.org/domain/{domain}"
 
@@ -44,11 +51,12 @@ def collect_rdap(domain):
                 "data": json.loads(response.read().decode())
             }
 
-    except Exception:
+    except Exception as error:
         return {
             "domain": domain,
             "status": None,
-            "data": {}
+            "data": {},
+            "error": str(error)
         }
 
 def collect_ip_intelligence(ip):
@@ -71,11 +79,12 @@ def collect_ip_intelligence(ip):
                 "data": json.loads(response.read().decode())
             }
 
-    except Exception:
+    except Exception as error:
         return {
             "ip": ip,
             "status": None,
-            "data": {}
+            "data": {},
+            "error": str(error)
         }
 
 def extract_ip_intelligence(data):

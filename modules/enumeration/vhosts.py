@@ -6,18 +6,13 @@ import socket
 import http.client
 from ipaddress import ip_address
 from urllib.parse import urlparse
-from pathlib import Path
+from config.paths import VHOST_WORDLIST
 
 from modules.recon.ips import resolve_ips
 
 
 def load_vhost_prefixes():
-    wordlist_path = (
-        Path(__file__).resolve().parents[2]
-        / "data"
-        / "wordlists"
-        / "vhosts.txt"
-    )
+    wordlist_path = VHOST_WORDLIST
 
     content = wordlist_path.read_text(encoding="utf-8")
 
